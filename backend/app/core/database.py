@@ -40,14 +40,23 @@ class UUIDType(TypeDecorator):
             return value
 
 
+# Configure engine options conditionally based on database type
+engine_kwargs = {
+    "echo": False,
+    "future": True,
+}
+
+if "postgresql" in settings.DATABASE_URL:
+    engine_kwargs.update({
+        "pool_pre_ping": True,
+        "pool_size": 10,
+        "max_overflow": 20,
+    })
+
 # Create Async SQLAlchemy Engine
 engine = create_async_engine(
     settings.DATABASE_URL,
-    echo=False,
-    future=True,
-    pool_pre_ping=True,
-    pool_size=10,
-    max_overflow=20,
+    **engine_kwargs
 )
 
 # Async Session Factory
