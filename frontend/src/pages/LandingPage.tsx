@@ -65,7 +65,7 @@ export const LandingPage: React.FC = () => {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
           <div className="glass-card" style={{ padding: '1.75rem', background: '#ffffff', textAlign: 'center' }}>
             <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#d1fae5', margin: '0 auto 1rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
-              🏏
+              🩺
             </div>
             <h3 style={{ fontSize: '1.15rem', color: '#0f172a', fontWeight: '700' }}>Dr. Rohit Sharma</h3>
             <div style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: '600', marginBottom: '0.4rem' }}>Senior Cardiologist</div>
@@ -75,7 +75,7 @@ export const LandingPage: React.FC = () => {
 
           <div className="glass-card" style={{ padding: '1.75rem', background: '#ffffff', textAlign: 'center' }}>
             <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#d1fae5', margin: '0 auto 1rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
-              🏏
+              🩺
             </div>
             <h3 style={{ fontSize: '1.15rem', color: '#0f172a', fontWeight: '700' }}>Dr. Virat Kohli</h3>
             <div style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: '600', marginBottom: '0.4rem' }}>Lead Neurologist</div>
@@ -84,8 +84,8 @@ export const LandingPage: React.FC = () => {
           </div>
 
           <div className="glass-card" style={{ padding: '1.75rem', background: '#ffffff', textAlign: 'center' }}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#e2e8f0', margin: '0 auto 1rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
-              👩‍⚕️
+            <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#d1fae5', margin: '0 auto 1rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
+              🩺
             </div>
             <h3 style={{ fontSize: '1.15rem', color: '#0f172a', fontWeight: '700' }}>Dr. Sarah Jenkins</h3>
             <div style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: '600', marginBottom: '0.4rem' }}>General Medicine</div>
@@ -94,8 +94,8 @@ export const LandingPage: React.FC = () => {
           </div>
 
           <div className="glass-card" style={{ padding: '1.75rem', background: '#ffffff', textAlign: 'center' }}>
-            <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#e2e8f0', margin: '0 auto 1rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
-              👶
+            <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#d1fae5', margin: '0 auto 1rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
+              🩺
             </div>
             <h3 style={{ fontSize: '1.15rem', color: '#0f172a', fontWeight: '700' }}>Dr. Ujjwal</h3>
             <div style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: '600', marginBottom: '0.4rem' }}>Pediatric Specialist</div>
