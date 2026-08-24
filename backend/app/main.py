@@ -4,6 +4,7 @@ from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from app.core.config import settings
 from app.api.router import api_router
+from app.core.seed import seed_database
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -14,17 +15,28 @@ app = FastAPI(
     openapi_url="/openapi.json",
 )
 
-# CORS Middleware
+
+@app.on_event("startup")
+async def on_startup():
+    """Auto-seed initial demo accounts on startup if not present."""
+    try:
+        await seed_database()
+    except Exception as e:
+        print(f"Startup database seeding log: {e}")
+
+
+# CORS Middleware Configuration
 origins = [
     settings.FRONTEND_URL,
     "http://localhost:5173",
     "http://127.0.0.1:5173",
     "http://localhost:3000",
+    "https://health-y.vercel.app",
 ]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
