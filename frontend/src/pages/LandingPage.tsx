@@ -87,10 +87,10 @@ export const LandingPage: React.FC = () => {
             <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: '#d1fae5', margin: '0 auto 1rem auto', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem' }}>
               🩺
             </div>
-            <h3 style={{ fontSize: '1.15rem', color: '#0f172a', fontWeight: '700' }}>Dr. Sarah Jenkins</h3>
+            <h3 style={{ fontSize: '1.15rem', color: '#0f172a', fontWeight: '700' }}>Dr. Amrita</h3>
             <div style={{ fontSize: '0.85rem', color: '#10b981', fontWeight: '600', marginBottom: '0.4rem' }}>General Medicine</div>
             <p style={{ fontSize: '0.78rem', color: '#64748b', marginBottom: '1.25rem' }}>Primary care & diagnostic medicine specialist.</p>
-            <button onClick={() => navigate('/login')} className="btn-navy" style={{ width: '100%', padding: '0.6rem' }}>Book Dr. Sarah</button>
+            <button onClick={() => navigate('/login')} className="btn-navy" style={{ width: '100%', padding: '0.6rem' }}>Book Dr. Amrita</button>
           </div>
 
           <div className="glass-card" style={{ padding: '1.75rem', background: '#ffffff', textAlign: 'center' }}>

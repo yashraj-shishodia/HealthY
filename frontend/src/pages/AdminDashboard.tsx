@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { adminPortalApi, CreateDoctorPayload } from '../services/adminPortalApi';
 import { doctorApi, DoctorProfile } from '../services/doctorApi';
+import { formatDoctorName } from '../utils/formatters';
 
 export const AdminDashboard: React.FC = () => {
   const [doctors, setDoctors] = useState<DoctorProfile[]>([]);
@@ -95,7 +96,7 @@ export const AdminDashboard: React.FC = () => {
             <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#64748b' }}>TOTAL DOCTORS</span>
             <span style={{ fontSize: '1.2rem', color: '#10b981' }}>🧰</span>
           </div>
-          <div style={{ fontSize: '2rem', fontWeight: '800', color: '#0f172a' }}>{doctors.length || 42}</div>
+          <div style={{ fontSize: '2rem', fontWeight: '800', color: '#0f172a' }}>{doctors.length || 4}</div>
         </div>
 
         <div className="glass-card" style={{ padding: '1.25rem', background: '#ffffff' }}>
@@ -146,16 +147,16 @@ export const AdminDashboard: React.FC = () => {
               </thead>
               <tbody>
                 {doctors.map(d => {
-                  const docName = d.full_name || 'Specialist';
-                  const initials = docName.split(' ').map((n: string) => n[0]).join('').substring(0, 2);
+                  const formattedName = formatDoctorName(d.full_name);
+                  const initials = formattedName.replace(/^Dr\.\s*/i, '').split(' ').map((n: string) => n[0]).join('').substring(0, 2);
                   return (
                     <tr key={d.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
                       <td style={{ padding: '0.85rem 0.75rem', fontWeight: '700', color: '#0f172a', fontSize: '0.9rem' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: '700' }}>
+                          <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: '#d1fae5', color: '#065f46', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.8rem', fontWeight: '700' }}>
                             {initials}
                           </div>
-                          Dr. {docName}
+                          {formattedName}
                         </div>
                       </td>
                       <td style={{ padding: '0.85rem 0.75rem', color: '#64748b', fontSize: '0.85rem' }}>
@@ -201,7 +202,7 @@ export const AdminDashboard: React.FC = () => {
               </div>
               <div style={{ padding: '0.75rem', background: '#f8fafc', borderRadius: '8px', border: '1px solid #e2e8f0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                  <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#0f172a' }}>Dr. Michael Chen</div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#0f172a' }}>Dr. Amrita</div>
                   <div style={{ fontSize: '0.75rem', color: '#64748b' }}>Oct 3 - Oct 5</div>
                 </div>
                 <span className="badge badge-navy" style={{ fontSize: '0.7rem' }}>Approved</span>
@@ -219,7 +220,7 @@ export const AdminDashboard: React.FC = () => {
             <form onSubmit={handleCreateDoctor} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
                 <label style={{ display: 'block', fontSize: '0.85rem', color: '#475569', fontWeight: '600', marginBottom: '0.3rem' }}>Doctor Full Name *</label>
-                <input required type="text" className="input-field" placeholder="e.g. Sarah Jenkins" value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                <input required type="text" className="input-field" placeholder="e.g. Dr. Amrita" value={fullName} onChange={(e) => setFullName(e.target.value)} />
               </div>
 
               <div>

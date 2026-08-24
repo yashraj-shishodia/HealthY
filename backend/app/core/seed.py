@@ -9,7 +9,7 @@ from app.core.security import get_password_hash
 
 
 async def seed_database():
-    """Seed demo admin, doctor (Rohit Sharma, Virat Kohli, etc.), and patient accounts."""
+    """Seed demo admin, doctor (Rohit Sharma, Virat Kohli, Dr. Amrita, etc.), and patient accounts."""
     async with AsyncSessionLocal() as db:
         print("🌱 Seeding database with initial demo accounts...")
 
@@ -44,7 +44,7 @@ async def seed_database():
             },
             {
                 "email": "doctor@healthy.com",
-                "full_name": "Dr. Sarah Jenkins",
+                "full_name": "Dr. Amrita",
                 "specialisation": "General Medicine",
                 "bio": "Primary care physician dedicated to comprehensive wellness and preventative healthcare.",
             },
@@ -93,6 +93,9 @@ async def seed_database():
                     )
                     db.add(wh)
                 print(f"  ✅ Created Doctor: {doc_info['email']} ({doc_info['full_name']})")
+            else:
+                # Update existing doctor name to Dr. Amrita if doctor@healthy.com
+                doc_user.full_name = doc_info["full_name"]
 
         # 3. Patient User
         patient_email = "patient@healthy.com"
