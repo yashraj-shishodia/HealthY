@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -6,6 +7,17 @@ from app.core.config import settings
 from app.api.router import api_router
 from app.core.seed import seed_database
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Lifespan context manager for application startup and shutdown."""
+    try:
+        await seed_database()
+    except Exception as e:
+        print(f"Startup database seeding log: {e}")
+    yield
+
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description="Healthcare Appointment & Follow-up Manager API",
@@ -13,16 +25,8 @@ app = FastAPI(
     docs_url="/docs",
     redoc_url="/redoc",
     openapi_url="/openapi.json",
+    lifespan=lifespan,
 )
-
-
-@app.on_event("startup")
-async def on_startup():
-    """Auto-seed initial demo accounts on startup if not present."""
-    try:
-        await seed_database()
-    except Exception as e:
-        print(f"Startup database seeding log: {e}")
 
 
 # CORS Middleware Configuration
