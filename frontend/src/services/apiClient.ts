@@ -32,6 +32,14 @@ export async function fetchWithAuth<T>(
 
   const data = await response.json().catch(() => ({}));
 
+  if (response.status === 401) {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('user');
+    if (window.location.pathname !== '/login' && window.location.pathname !== '/register' && window.location.pathname !== '/') {
+      window.location.href = '/login';
+    }
+  }
+
   if (!response.ok) {
     const errorMsg = data?.error?.message || data?.detail?.error?.message || (typeof data?.detail === 'string' ? data.detail : null) || 'Invalid request or credentials.';
     const errorCode = data?.error?.code || data?.detail?.error?.code || 'HTTP_ERROR';
