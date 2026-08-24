@@ -46,7 +46,7 @@ async def get_my_appointments(
     current_user: User = Depends(require_patient),
     db: AsyncSession = Depends(get_db)
 ):
-    """Lists appointment history for authenticated patient."""
+    """Lists appointment history strictly belonging to authenticated patient."""
     result = await db.execute(
         select(Appointment)
         .where(Appointment.patient_id == current_user.id)
@@ -61,25 +61,43 @@ async def get_appointment(
     current_user: User = Depends(get_current_user),
     db: AsyncSession = Depends(get_db)
 ):
-    """Fetch details for a specific appointment."""
+    """Fetch details for a specific appointment with strict ownership authorization and inline LLM fallbacks."""
     appointment = await get_appointment_by_id(db, appointment_id)
     if not appointment:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail={"error": {"code": "APPOINTMENT_NOT_FOUND", "message": "Appointment not found."}},
         )
-    # Authorization: Patient owns or Doctor owns or Admin
+    
+    # Strict Authorization: Patient owns or Doctor owns or Admin
     if current_user.role == "PATIENT" and appointment.patient_id != current_user.id:
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail={"error": {"code": "FORBIDDEN", "message": "You do not have access to this appointment."}},
         )
+    if current_user.role == "DOCTOR":
+        from app.services.doctor_service import get_doctor_by_user_id
+        doc = await get_doctor_by_user_id(db, current_user.id)
+        if not doc or appointment.doctor_id != doc.id:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail={"error": {"code": "FORBIDDEN", "message": "You do not have access to this appointment."}},
+            )
 
-    # Inline fallback: Process PENDING pre-visit summary if background worker didn't run
-    if appointment.pre_visit_summary_status == "PENDING" and appointment.symptoms:
+    # Inline fallback 1: Process PENDING pre-visit summary if background worker didn't run
+    if (appointment.pre_visit_summary_status in ["PENDING", "PROCESSING", None]) and appointment.symptoms:
         try:
             from app.workers.tasks import process_pre_visit_summary_async
             await process_pre_visit_summary_async(str(appointment.id), db)
+            await db.refresh(appointment)
+        except Exception:
+            pass
+
+    # Inline fallback 2: Process PENDING post-visit summary if background worker didn't run
+    if (appointment.post_visit_summary_status in ["PENDING", "PROCESSING"]) and appointment.doctor_notes:
+        try:
+            from app.workers.tasks import process_post_visit_summary_async
+            await process_post_visit_summary_async(str(appointment.id), db)
             await db.refresh(appointment)
         except Exception:
             pass
