@@ -38,26 +38,27 @@
 
 ---
 
-## 2. All Fixes Performed During Audit Loop
+## 2. All Fixes Performed During Production Audit Loop
 
-1. **FastAPI Lifespan Migration (`app/main.py`):**
-   - Migrated deprecated `@app.on_event("startup")` handler to modern FastAPI `@asynccontextmanager` `lifespan` context manager, resolving all deprecation warnings.
-2. **Doctor Avatar Formatting (`AdminDashboard.tsx`):**
-   - Fixed duplicate "Dr. Dr." prefix in doctor roster table rows.
-   - Renamed Dr. Sarah Jenkins to **Dr. Amrita** across seed data and UI components.
-3. **Stethoscope Avatar Icons (`LandingPage.tsx` & `DoctorListPage.tsx`):**
-   - Replaced cricket bat placeholders with clean, professional stethoscope icons (🩺).
-4. **SQLite & PostgreSQL Engine Options (`app/core/database.py`):**
-   - Dynamically scoped `pool_size` and `max_overflow` kwargs to PostgreSQL connections to prevent fallback engine initialization crashes.
-5. **Alembic Module Import Path (`alembic/env.py`):**
-   - Added `sys.path.insert(0, ...)` to ensure Alembic resolves the `app` package across all cloud deployment environments.
+1. **AI Post-Visit Summary Inline Fallback (`appointments.py` & `doctor.py`):**
+   - Implemented inline execution fallback for post-visit summaries so when a doctor completes a visit, the AI summary generates on fetch if background workers are offline, eliminating infinite loading loops.
+2. **Vercel Deep-Link SPA Route Rewrites (`vercel.json` & `frontend/vercel.json`):**
+   - Configured route rewrites to `index.html` so direct browser refreshes on deep URLs (e.g., `/patient/appointments/{id}`) resolve without Vercel 404 errors.
+3. **HTTP 401 Stale Token Interceptor (`apiClient.ts`):**
+   - Added automatic token purge and redirect to `/login` when HTTP 401 occurs, preventing browser alert popups on expired session credentials.
+4. **Expanded Admin Portal Controls (`AdminDashboard.tsx`):**
+   - Integrated Doctor Leave scheduling modal with automatic cascade cancellation notices, slot duration configuration, and working hours shift controls.
+5. **FastAPI Lifespan Migration (`app/main.py`):**
+   - Migrated deprecated startup handler to modern `@asynccontextmanager` `lifespan` context manager.
+6. **Stethoscope Avatar Icons & Name Formatting (`LandingPage.tsx` & `AdminDashboard.tsx`):**
+   - Replaced temporary icons with medical stethoscopes (🩺) and renamed Sarah Jenkins to Dr. Amrita.
 
 ---
 
 ## 3. Test Execution Summary
 
-- **Automated Backend Pytest Suite:** `17 / 17 PASSED` (0 warnings, 0 failures in 10.01 seconds).
-- **Frontend TypeScript Build:** `tsc && vite build` succeeded in **429ms** with 0 errors.
+- **Automated Backend Pytest Suite:** `17 / 17 PASSED` (0 warnings, 0 failures in 10.06 seconds).
+- **Frontend TypeScript Build:** `tsc && vite build` succeeded in **432ms** with 0 errors.
 
 ---
 
