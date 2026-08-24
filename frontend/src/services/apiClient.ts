@@ -1,4 +1,7 @@
-const API_BASE_URL = '/api';
+const envApiBase = (import.meta as any).env?.VITE_API_BASE_URL;
+const API_BASE_URL = envApiBase
+  ? `${envApiBase.replace(/\/$/, '')}/api`
+  : '/api';
 
 export interface APIErrorResponse {
   error: {
